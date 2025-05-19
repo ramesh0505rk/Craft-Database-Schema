@@ -1,7 +1,7 @@
 USE [Craft]
 GO
 /****** Object:  Table [dbo].[Users]    Script Date: 05-05-2025 18:28:58 ******/
-IF OBJECT_ID('MobileDeviceOrder', 'U') IS NULL
+IF OBJECT_ID('Users', 'U') IS NULL
 BEGIN
 	CREATE TABLE [dbo].[Users](
 		[UserID] [uniqueidentifier] NOT NULL,
