@@ -1,6 +1,6 @@
 USE [Craft]
 GO
-/****** Object:  StoredProcedure [dbo].[Usp_CreateUser]    Script Date: 04-06-2025 23:26:15 ******/
+/****** Object:  StoredProcedure [dbo].[Usp_CreateUser]    Script Date: 19-08-2025 10:10:23 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

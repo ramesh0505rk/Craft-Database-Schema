@@ -1,6 +1,6 @@
 ﻿USE [Craft]
 GO
-/****** Object:  StoredProcedure [dbo].[Usp_ValidateOtp]    Script Date: 02-06-2025 22:24:12 ******/
+/****** Object:  StoredProcedure [dbo].[Usp_ValidateOtp]    Script Date: 19-08-2025 10:11:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -24,7 +24,7 @@ BEGIN
 	SELECT @UserID = UserID FROM Users WHERE UserEmail = @LocalEmail
 	SELECT 
 		CASE WHEN EXISTS(
-			SELECT 1 FROM PasswordResetOtps WHERE UserID = @UserID AND Otp = @LocalOtp AND ExpiryDate >= GETUTCDATE()
+			SELECT 1 FROM PasswordResetOtps WHERE UserID = @UserID AND Otp = @LocalOtp AND ExpiryDate >= GETUTCDATE() AND IsUsed = 0
 		)
 		THEN 1
 		ELSE 0
