@@ -1,6 +1,6 @@
 USE [Craft]
 GO
-/****** Object:  StoredProcedure [dbo].[Usp_RequestOTP]    Script Date: 28-08-2025 09:59:27 ******/
+/****** Object:  StoredProcedure [dbo].[Usp_RequestOTP]    Script Date: 29-08-2025 10:09:12 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -16,15 +16,15 @@ GO
 -- 26/08/2025				Rameshkumar Krishnasamy		Created
 -- =============================================
 CREATE OR ALTER   PROCEDURE [dbo].[Usp_RequestOTP]
-	@UserEmail NVARCHAR(300),
-	@Otp INT OUTPUT
+	@UserEmail NVARCHAR(300)
 AS
 BEGIN
 --------------------------------------------------------
 -- Declare local variables
 --------------------------------------------------------
 	DECLARE @LocalUserEmail NVARCHAR(300) = @UserEmail,
-			@UserID UNIQUEIDENTIFIER
+			@UserID UNIQUEIDENTIFIER,
+			@Otp int
 --------------------------------------------------------
 	
 	-- Check if user exists
@@ -42,4 +42,6 @@ BEGIN
 
 	INSERT INTO PasswordResetOtps (UserID, Otp, ExpiryDate, IsUsed) VALUES
 	(@UserID, @Otp, DATEADD(MINUTE,10,GETUTCDATE()), 0)
+
+	SELECT @Otp AS Otp
 END
