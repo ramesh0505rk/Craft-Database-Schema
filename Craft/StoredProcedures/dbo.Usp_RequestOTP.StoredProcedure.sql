@@ -14,6 +14,7 @@ GO
 -- Changes field
 -- Date of change			Name						Description
 -- 26/08/2025				Rameshkumar Krishnasamy		Created
+-- 29/08/2025				Rameshkumar Krishnasamy		Modified to return OTP as output
 -- =============================================
 CREATE OR ALTER   PROCEDURE [dbo].[Usp_RequestOTP]
 	@UserEmail NVARCHAR(300)
