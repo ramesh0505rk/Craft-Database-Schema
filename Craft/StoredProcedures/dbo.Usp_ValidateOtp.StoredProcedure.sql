@@ -1,6 +1,6 @@
 ﻿USE [Craft]
 GO
-/****** Object:  StoredProcedure [dbo].[Usp_ValidateOtp]    Script Date: 19-08-2025 10:11:45 ******/
+/****** Object:  StoredProcedure [dbo].[Usp_ValidateOtp]    Script Date: 30-08-2025 13:58:39 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,18 +10,22 @@ GO
 -- Create date: 02/06/2025
 -- Description:	Validating otp
 -- =============================================
--- Sample Call: EXEC [dbo].[Usp_ValidateOtp] @Email = 'ramesh0505rk@gmail.com', @Otp = '8608'
+-- Sample Call: EXEC [dbo].[Usp_ValidateOtp] @UserEmail = 'ramesh0505rk@gmail.com', @Otp = '8608'
 CREATE OR ALTER PROCEDURE [dbo].[Usp_ValidateOtp]
-	@Email NVARCHAR(300),
+	@UserEmail NVARCHAR(300),
 	@Otp NVARCHAR(4)
 AS
 BEGIN
 	DECLARE
-	@LocalEmail NVARCHAR(300) = @Email,
+	@LocalUserEmail NVARCHAR(300) = @UserEmail,
 	@LocalOtp NVARCHAR(40) = @Otp,
 	@UserID UNIQUEIDENTIFIER
 
-	SELECT @UserID = UserID FROM Users WHERE UserEmail = @LocalEmail
+	SELECT @UserID = UserID FROM Users WHERE UserEmail = @LocalUserEmail
+
+	IF @UserID IS NULL
+		RETURN 0
+
 	SELECT 
 		CASE WHEN EXISTS(
 			SELECT 1 FROM PasswordResetOtps WHERE UserID = @UserID AND Otp = @LocalOtp AND ExpiryDate >= GETUTCDATE() AND IsUsed = 0
