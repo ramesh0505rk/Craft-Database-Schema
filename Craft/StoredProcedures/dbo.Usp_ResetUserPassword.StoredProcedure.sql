@@ -1,6 +1,6 @@
 USE [Craft]
 GO
-/****** Object:  StoredProcedure [dbo].[Usp_ResetUserPassword]    Script Date: 19-08-2025 10:11:17 ******/
+/****** Object:  StoredProcedure [dbo].[Usp_ResetUserPassword]    Script Date: 31-08-2025 10:44:07 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -15,6 +15,7 @@ GO
 -- Changes field
 -- Date of change			Name				Description
 -- 06/06/2025				Rameshkumar K		Implemented a logic to set the IsUsed field to 1 (PasswordResetOtps table).
+-- 31/08/2025				Rameshkumar K		Updated the return logic
 -- ====================================================================================================================================================
 CREATE OR ALTER   PROCEDURE [dbo].[Usp_ResetUserPassword]
 	@UserEmail NVARCHAR(300),
@@ -38,7 +39,9 @@ BEGIN
 	BEGIN
 		UPDATE Users SET Password = @LocalNewPassword WHERE UserID = @UserID 
 		UPDATE PasswordResetOtps SET IsUsed = 1 WHERE Otp = @LocalOtp AND UserID = @UserID
-		RETURN 0
+		SELECT 1 AS Result
+		RETURN
 	END
-	RETURN -1
+	SELECT 0 AS Result
+	RETURN
 END
