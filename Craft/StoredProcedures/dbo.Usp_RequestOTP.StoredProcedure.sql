@@ -10,6 +10,7 @@ GO
 -- Create date: 27/08/2025
 -- Description:	Created to generate OTP for password reset.
 -- =============================================
+-- Sample Call: EXEC Usp_RequestOTP @UserEmail = 'dave@gmail.com'
 -- =============================================
 -- Changes field
 -- Date of change			Name						Description
@@ -35,14 +36,16 @@ BEGIN
 	BEGIN
 		-- Set OTP = 0, if the user doesn't exist
 		SET @Otp = 0 
-		RETURN
+		SELECT @Otp AS Otp
 	END
+	ELSE
+	BEGIN
+		-- Generate 4 digit OTP
+		SET @Otp = FLOOR(RAND() * 9000) + 1000
 
-	-- Generate 4 digit OTP
-	SET @Otp = FLOOR(RAND() * 9000) + 1000
+		INSERT INTO PasswordResetOtps (UserID, Otp, ExpiryDate, IsUsed) VALUES
+		(@UserID, @Otp, DATEADD(MINUTE,10,GETUTCDATE()), 0)
 
-	INSERT INTO PasswordResetOtps (UserID, Otp, ExpiryDate, IsUsed) VALUES
-	(@UserID, @Otp, DATEADD(MINUTE,10,GETUTCDATE()), 0)
-
-	SELECT @Otp AS Otp
+		SELECT @Otp AS Otp
+	END
 END
